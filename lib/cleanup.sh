@@ -4,8 +4,8 @@
 cleanup_downloads() {
   echo "--- Cleaning Leftover APKs in Downloads ---"
   local files
-  files="$(adb_shell "ls /sdcard/Download/Downloader/*.apk 2>/dev/null" | tr -d '\r')"
-  if [[ -n "$files" ]]; then
+  files="$(adb_shell "ls /sdcard/Download/Downloader/*.apk 2>/dev/null || true" | tr -d '\r')"
+  if [[ -n "$files" && "$files" != *"No such file"* ]]; then
     adb_shell "rm -f /sdcard/Download/Downloader/*.apk"
     echo "  Cleaned leftover APK files from /sdcard/Download/Downloader/."
   else

@@ -14,6 +14,11 @@ apply_tweaks() {
   adb_shell settings put global animator_duration_scale "$anim_scale"
   echo "  Animations set to: $win_scale (window), $trans_scale (transition), $anim_scale (animator)."
 
+  if [[ -n "$BACKGROUND_PROCESS_LIMIT" ]]; then
+    adb_shell settings put global background_process_limit "$BACKGROUND_PROCESS_LIMIT"
+    echo "  Background process limit set to: $BACKGROUND_PROCESS_LIMIT."
+  fi
+
   # Privacy & Telemetry
   if [[ "${LIMIT_AD_TRACKING:-1}" -eq 1 ]]; then
     adb_shell settings put secure limit_ad_tracking 1
@@ -33,6 +38,7 @@ revert_tweaks() {
   adb_shell settings put global window_animation_scale 1.0
   adb_shell settings put global transition_animation_scale 1.0
   adb_shell settings put global animator_duration_scale 1.0
+  adb_shell settings put global background_process_limit -1
   adb_shell settings put secure limit_ad_tracking 0
   adb_shell settings put secure amz_limit_ad_tracking 0
   adb_shell settings put secure non_amz_limit_ad_tracking 0
